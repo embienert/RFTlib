@@ -13,7 +13,7 @@ def combined_hohmann_inclination_circular_peri(mu: float, peri_radius: float,
     :param mu: [km³/s²] Standard gravitational parameter of the reference object
     :param peri_radius: [km] Radius (distance) of the object in the origin orbit's peri-center
     :param transfer_a: [km] Semi-major axis of the transfer orbit
-    :param delta_i: [rad] Inclination change from origin to transfer orbit
+    :param delta_i: [rad] Inclination maneuver from origin to transfer orbit
     :return: dv12p [km/s] Velocity required for transition to Hohmann orbit with changed inclination
     """
 
@@ -30,7 +30,7 @@ def combined_hohmann_inclination_circular_apo(mu: float, transfer_a: float,
     :param mu: [km³/s²] Standard gravitational parameter of the reference object
     :param transfer_a: [km] Semi-major axis of the transfer orbit
     :param apo_radius: [km] Radius (distance) of the object in the target orbit's apo-center
-    :param delta_i: [rad] Inclination change from transfer to target orbit
+    :param delta_i: [rad] Inclination maneuver from transfer to target orbit
     :return: dv2a3 [km/s] Velocity required for transition to target orbit with changed inclination
     """
 
@@ -48,7 +48,7 @@ def combined_hohmann_inclination_peri(mu: float, origin_a: float, peri_radius: f
     :param origin_a: [km] Semi-major axis of the origin orbit
     :param peri_radius: [km] Radius (distance) of the object in the origin orbit's peri-center
     :param transfer_a: [km] Semi-major axis of the transfer orbit
-    :param delta_i: [rad] Inclination change from origin to transfer orbit
+    :param delta_i: [rad] Inclination maneuver from origin to transfer orbit
     :return: dv12p [km/s] Velocity required for transition to Hohmann orbit with changed inclination
     """
 
@@ -66,7 +66,7 @@ def combined_hohmann_inclination_apo(mu: float, transfer_a: float,
     :param transfer_a: [km] Semi-major axis of the transfer orbit
     :param target_a: [km] Semi-major axis of the target orbit
     :param apo_radius: [km] Radius (distance) of the object in the target orbit's apo-center
-    :param delta_i: [rad] Inclination change from transfer to target orbit
+    :param delta_i: [rad] Inclination maneuver from transfer to target orbit
     :return: dv2a3 [km/s] Velocity required for transition to target orbit with changed inclination
     """
 

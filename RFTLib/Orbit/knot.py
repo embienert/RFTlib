@@ -1,6 +1,6 @@
 import numpy as np
 
-from orbit import average_movement_mu_a, average_movement_T
+from .orbit import average_movement_mu_a, average_movement_T
 
 
 # TODO: Operations regarding increasing/decreasing knot
