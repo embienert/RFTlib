@@ -77,16 +77,18 @@ def orbit_mu_circular_v_r(v: float, r: float) -> float:
     return v**2 * r
 
 
-def orbit_period_circular_mu(mu: float, r: float) -> float:
+def orbit_period_mu(mu: float, a: float) -> float:
     """
     Calculate the orbit period of an object around a reference object, assuming the object's orbit is circular (r=a)
 
     :param mu: [km³/s²] Standard gravitational parameter of the reference object
-    :param r: [km] Radius of the orbit around the reference object
+    :param a: [km] Semi-major axis of the orbit around the reference object
     :return: T [s] Orbit period of the object
     """
 
-    return 2 * np.pi * np.sqrt(r**3 / mu)
+    return 2 * np.pi * np.sqrt(a**3 / mu)
+
+
 
 
 def orbit_period_circular_v(r: float, v: float) -> float:
@@ -148,3 +150,53 @@ def average_movement_T(T: float) -> float:
     """
 
     return 2 * np.pi / T
+
+
+def vesc_r(mu: float, r: float) -> float:
+    """
+    Calculate velocity required to exit the gravitational influence of a reference object
+
+    :param mu: [km³/s²] Standard gravitational parameter of the reference object
+    :param r: [km] Radius of the orbit around the reference object
+    :return: v_esc [km/s] Escape velocity required to exit SOI of the reference object
+    """
+
+    return np.sqrt(2 * mu / r)
+
+
+def v_vesc(v_esc: float, v_inf: float) -> float:
+    """
+    Calculate required velocity to achieve the desired hyperbolic excess speed
+
+    :param v_esc: [km/s] Escape velocity required to exit SOI of the reference object
+    :param v_inf: [km/s] Hyperbolic excess speed
+    :return: v [km/s] Required velocity to achieve desired hyperbolic excess speed
+    """
+
+    return v_esc + v_inf
+
+
+def r_SOI_mu(a: float, mu: float, MU: float) -> float:
+    """
+    Calculate the radius of the sphere of influence (SOI) of an object orbiting around a reference object
+
+    :param a: [km] Semi-major axis of the object's orbit around the reference object
+    :param mu: [km³/s²] Standard gravitational parameter of the orbiting object
+    :param MU: [km³/s²] Standard gravitational parameter of the orbited reference object
+    :return: r [km] Radius of the sphere of influence of the orbiting object
+    """
+
+    return a * np.pow(mu/MU, 2/5)
+
+
+def r_SOI_m(a: float, m: float, M: float) -> float:
+    """
+    Calculate the radius of the sphere of influence (SOI) of an object orbiting around a reference object
+
+    :param a: [km] Semi-major axis of the object's orbit around the reference object
+    :param m: [kg] Mass of the orbiting object
+    :param M: [kg] Mass of the orbited reference object
+    :return: r [km] Radius of the sphere of influence of the orbiting object
+    """
+
+    return a * np.pow(m/M, 2/5)
