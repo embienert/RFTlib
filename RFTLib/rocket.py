@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 
 
@@ -36,7 +38,7 @@ def dv_veff_mpf(v_eff: float, mpf: float) -> float:
     :return: dv [m/s] Velocity difference of the rocket after engine burn
     """
 
-    return v_eff * np.log(1 / mpf)
+    return v_eff * np.log(1 / (1 - mpf))
 
 
 def mpf_dv_veff(dv: float, veff: float) -> float:
@@ -60,7 +62,7 @@ def veff_dv_mpf(dv: float, mpf: float) -> float:
     :return: v_eff [m/s] Effective exit velocity of the propulsion system
     """
 
-    return dv / np.log(1 / mpf)
+    return dv / np.log(1 / (1 - mpf))
 
 
 def mpf_fuel_mass_m0(fuel_mass: float, m0: float) -> float:
@@ -175,3 +177,61 @@ def thrust_isp_flow_rate(g0: float, isp: float, flow_rate: float) -> float:
 
 
 # TODO: Calculating total thrust/effective velocity from multiple parallel propulsion systems
+def veff_total(v_effs: List[float], flow_rates: List[float]) -> float:
+    """
+    Calculate the total effective exit velocity of a parallel propulsion system
+
+    :param v_effs: *[m/s] List containing the effective exit velocities of the single propulsion systems
+    :param flow_rates: *[kg/s] List containing the propellant flow rates of the single propulsion systems
+    :return: v_eff [m/s] Total effective exit velocity of all parallel propulsion systems
+    """
+
+    assert len(v_effs) == len(flow_rates), "List sizes must be equal"
+
+    v_effs_array = np.array(v_effs)
+    flow_rates_array = np.array(flow_rates)
+
+    return np.sum(v_effs_array * flow_rates_array) / np.sum(flow_rates_array)
+
+
+def veff_veff_total(v_eff_total: float, v_effs: List[float], flow_rates: List[float]) -> float:
+    """
+    Calculate the effective exit velocity of one propulsion system in a set of parallel propulsion systems
+
+    :param v_eff_total: [m/s] Total effective exit velocity of the parallel propulsion system
+    :param v_effs: *[m/s] List containing the effective exit velocities of the single propulsion systems
+        (except for the wanted value)
+    :param flow_rates: *[kg/s] List containing the propellant flow rates of the single propulsion systems,
+        with the first entry corresponding to the wanted effective exit velocity
+    :return: v_eff [m/s] Effective exit velocity of the single propulsion system
+    """
+
+    assert len(flow_rates) - len(v_effs) == 1, \
+        "There must be exactly one more entry in the flow_rates list than the v_effs list"
+
+    v_effs_array = np.array(v_effs)
+    flow_rates_array = np.array(flow_rates)
+
+    return (v_eff_total * np.sum(flow_rates_array) - np.sum(v_effs_array * flow_rates_array[1:])) / flow_rates_array[0]
+
+
+def flow_rate_veff_total(v_eff_total: float, v_effs: List[float], flow_rates: List[float]) -> float:
+    """
+    Calculate the propellant flow rate of one propulsion system in a set of parallel propulsion systems
+
+    :param v_eff_total: [m/s] Total effective exit velocity of the parallel propulsion system
+    :param v_effs: *[m/s] List containing the effective exit velocities of the single propulsion systems,
+        with the first entry corresponding to the wanted flow rate
+    :param flow_rates: *[kg/s] List containing the propellant flow rates of the single propulsion systems
+        (except for the wanted value)
+    :return: ṁ [kg/s] Propellant flow rate of the single propulsion system
+    """
+
+    assert len(v_effs) - len(flow_rates) == 1, \
+        "There must be exactly one more entry in the v_effs list than the flow_rates list"
+
+    v_effs_array = np.array(v_effs)
+    flow_rates_array = np.array(flow_rates)
+
+    return (v_eff_total * np.sum(flow_rates_array) - np.sum(flow_rates_array * v_effs_array[1:])) / \
+        (v_effs[0] - v_eff_total)
