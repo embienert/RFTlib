@@ -235,3 +235,39 @@ def flow_rate_veff_total(v_eff_total: float, v_effs: List[float], flow_rates: Li
 
     return (v_eff_total * np.sum(flow_rates_array) - np.sum(flow_rates_array * v_effs_array[1:])) / \
         (v_effs[0] - v_eff_total)
+
+
+def structure_mass_coefficient(structure_mass: float, fuel_mass: float) -> float:
+    """
+    Calculate the structure mass coefficient
+
+    :param structure_mass: [kg] Structure and motor mass of the rocket
+    :param fuel_mass: [kg] Propellant mass of the rocket
+    :return: sigma [] Structure mass coefficient of the rocket
+    """
+
+    return structure_mass / (structure_mass + fuel_mass)
+
+
+def structure_mass_sigma(sigma: float, fuel_mass: float) -> float:
+    """
+    Calculate the structure mass
+
+    :param sigma: [] Structure mass coefficient of the rocket
+    :param fuel_mass: [kg] Propellant mass of the rocket
+    :return: m_S [kg] Structure and motor mass of the rocket
+    """
+
+    return sigma * fuel_mass / (1 - sigma)
+
+
+def fuel_mass_sigma(sigma: float, structure_mass: float) -> float:
+    """
+    Calculate the fuel mass
+
+    :param sigma: [] Structure mass coefficient of the rocket
+    :param structure_mass: [kg] Structure and motor mass of the rocket
+    :return: m_T [kg] Propellant mass of the rocket
+    """
+
+    return (1 - sigma) * structure_mass / sigma
