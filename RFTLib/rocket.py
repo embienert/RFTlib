@@ -7,10 +7,10 @@ def dv_veff_m(v_eff: float, m_start: float, m_end: float) -> float:
     """
     Calculate the rocket's velocity difference
 
-    :param v_eff: [m/s] Effective exit velocity of the propulsion system
+    :param v_eff: [km/s] Effective exit velocity of the propulsion system
     :param m_start: [kg] Initial mass of the rocket
     :param m_end: [kg] Final mass of the rocket
-    :return: dv [m/s] Velocity difference of the rocket after engine burn
+    :return: dv [km/s] Velocity difference of the rocket after engine burn
     """
 
     return v_eff * np.log(m_start / m_end)
@@ -20,10 +20,10 @@ def veff_dv_m(dv: float, m_start: float, m_end: float) -> float:
     """
     Calculate the propulsion system's effective exit velocity
 
-    :param dv: [m/s] Velocity difference of the rocket after engine burn
+    :param dv: [km/s] Velocity difference of the rocket after engine burn
     :param m_start: [kg] Initial mass of the rocket
     :param m_end: [kg] Final mass of the rocket
-    :return: v_eff [m/s] Effective exit velocity of the propulsion system
+    :return: v_eff [km/s] Effective exit velocity of the propulsion system
     """
 
     return dv / np.log(m_start / m_end)
@@ -33,9 +33,9 @@ def dv_veff_mpf(v_eff: float, mpf: float) -> float:
     """
     Calculate the rocket's velocity difference
 
-    :param v_eff: [m/s] Effective exit velocity of the propulsion system
+    :param v_eff: [km/s] Effective exit velocity of the propulsion system
     :param mpf: [] Propellant mass fraction of the burn process
-    :return: dv [m/s] Velocity difference of the rocket after engine burn
+    :return: dv [km/s] Velocity difference of the rocket after engine burn
     """
 
     return v_eff * np.log(1 / (1 - mpf))
@@ -45,8 +45,8 @@ def mpf_dv_veff(dv: float, veff: float) -> float:
     """
     Calculate propellant mass fraction
 
-    :param dv: [m/s] Velocity difference of the rocket after engine burn
-    :param veff: [m/s] Effective exit velocity of the propulsion system
+    :param dv: [km/s] Velocity difference of the rocket after engine burn
+    :param veff: [km/s] Effective exit velocity of the propulsion system
     :return: mpf [] Propellant mass fraction of the burn process
     """
 
@@ -57,9 +57,9 @@ def veff_dv_mpf(dv: float, mpf: float) -> float:
     """
     Calculate the propulsion system's effective exit velocity
 
-    :param dv: [m/s] Velocity difference of the rocket after engine burn
+    :param dv: [km/s] Velocity difference of the rocket after engine burn
     :param mpf: [] Propellant mass fraction of the burn process
-    :return: v_eff [m/s] Effective exit velocity of the propulsion system
+    :return: v_eff [km/s] Effective exit velocity of the propulsion system
     """
 
     return dv / np.log(1 / (1 - mpf))
@@ -105,9 +105,9 @@ def veff_isp(g0: float, isp: float) -> float:
     """
     Calculate the propulsion system's effective exit velocity
 
-    :param g0: [m/s²] Standard acceleration of gravity
+    :param g0: [km/s²] Standard acceleration of gravity
     :param isp: [s] Specific impulse of the propulsion system
-    :return: veff [m/s] Effective exit velocity of the propulsion system
+    :return: veff [km/s] Effective exit velocity of the propulsion system
     """
 
     return g0 * isp
@@ -117,8 +117,8 @@ def isp_veff(g0: float, v_eff: float) -> float:
     """
     Calculate the specific impulse of the propulsion system
 
-    :param g0: [m/s²] Standard acceleration of gravity
-    :param v_eff: [m/s] Effective exit velocity of the propulsion system
+    :param g0: [km/s²] Standard acceleration of gravity
+    :param v_eff: [km/s] Effective exit velocity of the propulsion system
     :return: isp [s] Specific impulse of the propulsion system
     """
 
@@ -129,9 +129,9 @@ def veff_thrust_flow_rate(thrust: float, flow_rate: float) -> float:
     """
     Calculate the propulsion system's effective exit velocity
 
-    :param thrust: [m*kg/s²] Thrust of the propulsion system
+    :param thrust: [km*kg/s² bzw. kN] Thrust of the propulsion system
     :param flow_rate: [kg/s] Propellant flow rate of the propulsion system
-    :return: veff [m/s] Effective exit velocity of the propulsion system
+    :return: veff [km/s] Effective exit velocity of the propulsion system
     """
 
     return thrust / flow_rate
@@ -141,8 +141,8 @@ def isp_thrust_flow_rate(g0: float, thrust: float, flow_rate: float) -> float:
     """
     Calculate the specific impulse of the propulsion system
 
-    :param g0: [m/s²] Standard acceleration of gravity
-    :param thrust: [m*kg/s²] Thrust of the propulsion system
+    :param g0: [km/s²] Standard acceleration of gravity
+    :param thrust: [km*kg/s² bzw. kN] Thrust of the propulsion system
     :param flow_rate: [kg/s] Propellant flow rate of the propulsion system
     :return: isp [s] Specific impulse of the propulsion system
     """
@@ -154,9 +154,9 @@ def flow_rate_isp_thrust(g0: float, isp: float, thrust: float) -> float:
     """
     Calculate the propellant flow rate of the propulsion system
 
-    :param g0: [m/s²] Standard acceleration of gravity
+    :param g0: [km/s²] Standard acceleration of gravity
     :param isp: [s] Specific impulse of the propulsion system
-    :param thrust: [m*kg/s²] Thrust of the propulsion system
+    :param thrust: [km*kg/s² bzw. kN] Thrust of the propulsion system
     :return: ṁ [kg/s] Propellant flow rate of the propulsion system
     """
 
@@ -167,10 +167,10 @@ def thrust_isp_flow_rate(g0: float, isp: float, flow_rate: float) -> float:
     """
     Calculate the thrust of the propulsion system
 
-    :param g0: [m/s²] Standard acceleration of gravity
+    :param g0: [km/s²] Standard acceleration of gravity
     :param isp: [s] Specific impulse of the propulsion system
     :param flow_rate: [kg/s] Propellant flow rate of the propulsion system
-    :return: T [m*kg/s²] Thrust of the propulsion system
+    :return: T [km*kg/s² bzw. kN] Thrust of the propulsion system
     """
 
     return g0 * isp * flow_rate
@@ -181,9 +181,9 @@ def veff_total(v_effs: List[float], flow_rates: List[float]) -> float:
     """
     Calculate the total effective exit velocity of a parallel propulsion system
 
-    :param v_effs: *[m/s] List containing the effective exit velocities of the single propulsion systems
+    :param v_effs: *[km/s] List containing the effective exit velocities of the single propulsion systems
     :param flow_rates: *[kg/s] List containing the propellant flow rates of the single propulsion systems
-    :return: v_eff [m/s] Total effective exit velocity of all parallel propulsion systems
+    :return: v_eff [km/s] Total effective exit velocity of all parallel propulsion systems
     """
 
     assert len(v_effs) == len(flow_rates), "List sizes must be equal"
@@ -198,12 +198,12 @@ def veff_veff_total(v_eff_total: float, v_effs: List[float], flow_rates: List[fl
     """
     Calculate the effective exit velocity of one propulsion system in a set of parallel propulsion systems
 
-    :param v_eff_total: [m/s] Total effective exit velocity of the parallel propulsion system
-    :param v_effs: *[m/s] List containing the effective exit velocities of the single propulsion systems
+    :param v_eff_total: [km/s] Total effective exit velocity of the parallel propulsion system
+    :param v_effs: *[km/s] List containing the effective exit velocities of the single propulsion systems
         (except for the wanted value)
     :param flow_rates: *[kg/s] List containing the propellant flow rates of the single propulsion systems,
         with the first entry corresponding to the wanted effective exit velocity
-    :return: v_eff [m/s] Effective exit velocity of the single propulsion system
+    :return: v_eff [km/s] Effective exit velocity of the single propulsion system
     """
 
     assert len(flow_rates) - len(v_effs) == 1, \
@@ -219,8 +219,8 @@ def flow_rate_veff_total(v_eff_total: float, v_effs: List[float], flow_rates: Li
     """
     Calculate the propellant flow rate of one propulsion system in a set of parallel propulsion systems
 
-    :param v_eff_total: [m/s] Total effective exit velocity of the parallel propulsion system
-    :param v_effs: *[m/s] List containing the effective exit velocities of the single propulsion systems,
+    :param v_eff_total: [km/s] Total effective exit velocity of the parallel propulsion system
+    :param v_effs: *[km/s] List containing the effective exit velocities of the single propulsion systems,
         with the first entry corresponding to the wanted flow rate
     :param flow_rates: *[kg/s] List containing the propellant flow rates of the single propulsion systems
         (except for the wanted value)

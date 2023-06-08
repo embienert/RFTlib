@@ -19,6 +19,18 @@ def inclination_change(delta_i: float, v: float):
     return 2 * v * np.sin(delta_i / 2)
 
 
+def inclination_inclination_change_dv(dv: float, v: float):
+    """
+    Calculate the inclination change
+
+    :param dv: [km/s] Velocity change of the inclination maneuver
+    :param v: [km/s] Current Velocity of the object
+    :return: delta_i [] Inclination change
+    """
+
+    return 2 * np.arcsin(dv / (2 * v))
+
+
 # ------------------------------------ #
 # Hohmann transfer to different radius #
 # ------------------------------------ #
