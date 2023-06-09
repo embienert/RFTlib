@@ -175,7 +175,6 @@ def thrust_isp_flow_rate(v_eff: float, flow_rate: float) -> float:
     return v_eff * flow_rate
 
 
-# TODO: Calculating total thrust/effective velocity from multiple parallel propulsion systems
 def veff_total(v_effs: List[float], flow_rates: List[float]) -> float:
     """
     Calculate the total effective exit velocity of a parallel propulsion system

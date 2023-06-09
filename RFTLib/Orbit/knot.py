@@ -3,8 +3,6 @@ import numpy as np
 from .orbit import average_movement_mu_a, average_movement_T
 
 
-# TODO: Operations regarding increasing/decreasing knot
-
 def knot_drift_J2_mu(mu: float, r: float, a: float, e: float, i: float, J2: float) -> float:
     """
     Calculate knot drift of an object's orbit around a reference object using J2 model
