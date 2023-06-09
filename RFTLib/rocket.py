@@ -50,7 +50,7 @@ def mpf_dv_veff(dv: float, veff: float) -> float:
     :return: mpf [] Propellant mass fraction of the burn process
     """
 
-    return 1 - np.power(np.e, -dv/veff)
+    return 1 - np.power(np.e, -dv / veff)
 
 
 def veff_dv_mpf(dv: float, mpf: float) -> float:
@@ -163,17 +163,16 @@ def flow_rate_isp_thrust(g0: float, isp: float, thrust: float) -> float:
     return thrust / (g0 * isp)
 
 
-def thrust_isp_flow_rate(g0: float, isp: float, flow_rate: float) -> float:
+def thrust_isp_flow_rate(v_eff: float, flow_rate: float) -> float:
     """
     Calculate the thrust of the propulsion system
 
-    :param g0: [km/s²] Standard acceleration of gravity
-    :param isp: [s] Specific impulse of the propulsion system
+    :param v_eff: [km/s] Effective exit velocity of the propulsion system
     :param flow_rate: [kg/s] Propellant flow rate of the propulsion system
     :return: T [km*kg/s² bzw. kN] Thrust of the propulsion system
     """
 
-    return g0 * isp * flow_rate
+    return v_eff * flow_rate
 
 
 # TODO: Calculating total thrust/effective velocity from multiple parallel propulsion systems
@@ -271,3 +270,103 @@ def fuel_mass_sigma(sigma: float, structure_mass: float) -> float:
     """
 
     return (1 - sigma) * structure_mass / sigma
+
+
+def itot_thrust_burn_duration(thrust: float, burn_duration: float) -> float:
+    """
+    Calculate the total impulse
+
+    :param thrust: [kg*km/s² bzw. kN] Thrust of the propulsion system
+    :param burn_duration: [s] Duration of the burn process
+    :return: I_tot [kg*km/s bzw. kNs] Total impulse of the propulsion system
+    """
+
+    return thrust * burn_duration
+
+
+def thrust_itot_burn_duration(i_tot: float, burn_duration: float) -> float:
+    """
+    Calculate the thrust of the propulsion system
+
+    :param i_tot: [kg*km/s bzw. kNs] Total impulse of the propulsion system
+    :param burn_duration: [s] Duration of the burn process
+    :return: T [kg*km/s² bzw. kN] Thrust of the propulsion system
+    """
+
+    return i_tot / burn_duration
+
+
+def burn_duration_itot_thrust(i_tot: float, thrust: float) -> float:
+    """
+    Calculate the burn time of the propulsion system
+
+    :param i_tot: [kg*km/s bzw. kNs] Total impulse of the propulsion system
+    :param thrust: [kg*km/s² bzw. kN] Thrust of the propulsion system
+    :return: t [s] Duration of the burn process
+    """
+
+    return i_tot / thrust
+
+
+def itot_veff_m(v_eff: float, m: float) -> float:
+    """
+    Calculate the total impulse
+
+    :param v_eff: [km/s] Effective exit velocity of the propulsion system
+    :param m: [kg] Mass of the fuel used during the burn process
+    :return: I_tot [kg*km/s bzw. kNs] Total impulse of the propulsion system
+    """
+
+    return v_eff * m
+
+
+def veff_itot_m(i_tot: float, m: float) -> float:
+    """
+    Calculate the effective exit velocity of the propulsion system
+
+    :param i_tot: [kg*km/s bzw. kNs] Total impulse of the propulsion system
+    :param m: [kg] Mass of the fuel used during the burn process
+    :return: v_eff [km/s] Effective exit velocity of the propulsion system
+    """
+
+    return i_tot / m
+
+
+def m_itot_veff(i_tot: float, v_eff: float) -> float:
+    """
+    Calculate the mass of the fuel used during the burn process
+
+    :param i_tot: [kg*km/s bzw. kNs] Total impulse of the propulsion system
+    :param v_eff: [km/s] Effective exit velocity of the propulsion system
+    :return: m [kg] Mass of the fuel used during the burn process
+    """
+
+    return i_tot / v_eff
+
+
+def veff_saint_venant_wantzel(kappa: float, R: float, M: float, T_c: float, p_e: float, p_c: float) -> float:
+    """
+    Calculate the effective exit velocity of a propulsion system according to the equation of Saint-Venant and Wantzel
+
+    :param kappa: [] Adiabatic coefficient of the propellant
+    :param R: [kg*km²/(s²*K*mol)] Universal gas constant
+    :param M: [kg/mol] Molar mass of the propellant
+    :param T_c: [K] Temperature in the burn chamber
+    :param p_e: [kg/(km*s²)] Pressure at the exhaust
+    :param p_c: [kg/(km*s²)] Pressure in the burn chamber
+    :return: v_eff [km/s] Effective exit velocity of the propulsion system
+    """
+
+    return np.sqrt(2 * kappa * R * T_c / ((kappa - 1) * M) * (1 - np.pow(p_e / p_c, (kappa - 1) / kappa)))
+
+
+def v_launch_latitude(rotation_velocity: float, latitude: float) -> float:
+    """
+    Calculate the velocity gain when launching east.
+
+    :param rotation_velocity: [km/s] Rotation velocity of the body the rocket is launching from
+    :param latitude: [rad] Latitude of the position of the rocket launch
+    :return: v [km/s] Velocity gain from launching east
+    """
+
+    return rotation_velocity * np.cos(latitude)

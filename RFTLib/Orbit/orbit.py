@@ -103,8 +103,6 @@ def orbit_period_circular_v(r: float, v: float) -> float:
     return 2 * np.pi * r / v
 
 
-# TODO: orbit period for non-circular orbits
-
 def orbit_radius_T(mu: float, T: float) -> float:
     """
     Calculate the orbit radius of an object around a reference object, assuming the object's orbit is circular (r=a)
@@ -127,6 +125,30 @@ def orbit_velocity_T(r: float, T: float) -> float:
     """
 
     return 2 * np.pi * r / T
+
+
+def true_anomaly(rx: float, ry: float) -> float:
+    """
+    Calculate the true anomaly of an orbiting object
+
+    :param rx: [km] Current offset of the orbiting object along the Euclidean x-Axis on the orbit plane
+    :param ry: [km] Current offset of the orbiting object along the Euclidean y-Axis on the orbit plane
+    :return: nu [rad] True anomaly of the orbiting object
+    """
+
+    return np.arctan(ry / rx)
+
+
+def aop(rx_p: float, ry_p: float) -> float:
+    """
+    Calculate the argument of perigee (aop) of an object's orbit
+
+    :param rx_p: [km] Current offset of the orbiting object along the Euclidean x-Axis on the orbit plane
+    :param ry_p: [km] Current offset of the orbiting object along the Euclidean y-Axis on the orbit plane
+    :return: omega [rad] Argument of perigee (aop) of the orbit
+    """
+
+    return np.arctan(ry_p / rx_p)
 
 
 def average_movement_mu_a(mu: float, a: float) -> float:
@@ -169,11 +191,11 @@ def v_vesc(v_esc: float, v_inf: float) -> float:
     Calculate required velocity to achieve the desired hyperbolic excess speed
 
     :param v_esc: [km/s] Escape velocity required to exit SOI of the reference object
-    :param v_inf: [km/s] Hyperbolic excess speed
-    :return: v [km/s] Required velocity to achieve desired hyperbolic excess speed
+    :param v_inf: [km/s] Hyperbolic excess velocity
+    :return: v [km/s] Required velocity to achieve desired hyperbolic excess velocity
     """
 
-    return v_esc + v_inf
+    return np.sqrt(v_esc**2 + v_inf**2)
 
 
 def r_SOI_mu(a: float, mu: float, MU: float) -> float:
@@ -200,3 +222,150 @@ def r_SOI_m(a: float, m: float, M: float) -> float:
     """
 
     return a * np.pow(m/M, 2/5)
+
+
+def energy_v_m_r(MU: float, v: float, m: float, r: float) -> float:
+    """
+    Calculate the energy of an object in the gravitational field of a reference object
+
+    :param MU: [km³/s²] Standard gravitational parameter of the reference object
+    :param v: [km/s] Velocity of the object
+    :param m: [kg] Mass of the object
+    :param r: [km] Distance of the object from the reference object
+    :return: E [kg*km²/s² bzw. MJ] Orbital energy of the object
+    """
+
+    return (m * v**2 / 2) - (m * MU / r)
+
+
+def sam(mu: float, p: float) -> float:
+    """
+    Calculate the specific angular momentum (sam) of an object orbiting a reference object
+
+    :param mu: [km³/s²] Standard gravitational parameter of the reference object
+    :param p: [km] Semilatus rectum of the object's orbit
+    :return: h [km²/s] Specific angular momentum of the object
+    """
+
+    return np.sqrt(mu * p)
+
+
+def p_sam(mu: float, h: float) -> float:
+    """
+    Calculate the semilatus rectum of an object's orbit around a reference object
+
+    :param mu: [km³/s²] Standard gravitational parameter of the reference object
+    :param h: [km²/s] Specific angular momentum (sam) of the orbiting object
+    :return: p [km] Semilatus rectum of the object's orbit
+    """
+
+    return h**2 / mu
+
+
+def mu_sam_p(h: float, p: float) -> float:
+    """
+    Calculate a reference object's standard gravitational parameter by an orbiting object's attributes
+
+    :param h: [km²/s] Specific angular momentum (sam) of the orbiting object
+    :param p: [km] Semilatus rectum of the object's orbit
+    :return: mu [km³/s²] Standard gravitational parameter of the reference object
+    """
+
+    return h**2 / p
+
+
+def soe(MU: float, v: float, r: float):
+    """
+    Calculate the specific orbital energy of an object orbiting a reference object
+
+    :param MU: [km³/s²] Standard gravitational parameter of the reference object
+    :param v: [km/s] Velocity of the object
+    :param r: [km] Distance of the object from the reference object
+    :return: e [km²/s² bzw. MJ/kg] Specific orbital energy of the object
+    """
+
+    return (v**2 / 2) - (MU / r)
+
+
+def soe_E_m(E: float, m: float) -> float:
+    """
+    Calculate the specific orbital energy of an object orbiting a reference object
+
+    :param E: [kg*km²/s² bzw. MJ] Orbital energy of the orbiting object
+    :param m: [kg] Mass of the orbiting object
+    :return: e [km²/s² bzw. MJ/kg] Specific orbital energy of the object
+    """
+
+    return E / m
+
+
+def E_soe_m(e: float, m: float) -> float:
+    """
+    Calculate the orbital energy of an object orbiting around a reference object
+
+    :param e: [km²/s² bzw MJ/kg] Specific orbital energy of the object
+    :param m: [kg] Mass of the orbiting object
+    :return: E [kg*km²/s² bzw. MJ] Orbital energy of the orbiting object
+    """
+
+    return e * m
+
+
+def m_soe_E(e: float, E: float) -> float:
+    """
+    Calculate the mass of an object orbiting a reference object
+
+    :param e: [km²/s² bzw MJ/kg] Specific orbital energy of the object
+    :param E: [kg*km²/s² bzw. MJ] Orbital energy of the orbiting object
+    :return: [kg] Mass of the orbiting object
+    """
+
+    return E / e
+
+
+def sam_SAM_m(H: float, m: float) -> float:
+    """
+    Calculate the specific angular momentum of an object orbiting a reference object
+
+    :param H: [kg*km²/s bzw. kNms] constant angular momentum of the reference object
+    :param m: [kg] Mass of the object
+    :return: h [km²/s] Specific angular momentum of the object
+    """
+
+    return H / m
+
+
+def SAM_sam_m(h: float, m: float) -> float:
+    """
+    Calculate the constant angular momentum of a reference object orbited by another object
+
+    :param h: [km²/s] Specific angular momentum of the object
+    :param m: [kg] Mass of the object
+    :return: H [kg*km²/s bzw. kNms] constant angular momentum of the reference object
+    """
+
+    return h * m
+
+
+def m_SAM_sam(H: float, h: float) -> float:
+    """
+    Calculate the mass of an object orbiting a reference object
+
+    :param H: [kg*km²/s bzw. kNms] constant angular momentum of the reference object
+    :param h: [km²/s] Specific angular momentum of the object
+    :return: [kg] Mass of the object
+    """
+
+    return H / h
+
+
+def sam_rp_vp(radius: float, velocity: float) -> float:
+    """
+    Calculate the specific angular momentum of an object orbiting a reference object
+
+    :param radius: [km] Distance of the object in its peri- or apo-center
+    :param velocity: [km/s] Velocity of the object in its peri- or apo-center
+    :return: [km²/s] Specific angular momentum of the object
+    """
+
+    return radius * velocity
