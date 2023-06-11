@@ -32,7 +32,7 @@ def sphere_segment_surface_theta(radius: float, theta: float) -> float:
     :return: A [km²] Mantle surface area of the spherical cap
     """
 
-    return 2 * np.pi * radius**2 * (1 - np.cos(theta))
+    return np.pi * radius**2 * (1 - np.cos(theta))
 
 
 def sphere_segment_surface_base(height: float, base_radius: float) -> float:

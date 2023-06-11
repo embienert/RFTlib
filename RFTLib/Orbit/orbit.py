@@ -208,7 +208,7 @@ def r_SOI_mu(a: float, mu: float, MU: float) -> float:
     :return: r [km] Radius of the sphere of influence of the orbiting object
     """
 
-    return a * np.pow(mu/MU, 2/5)
+    return a * np.power(mu/MU, 2/5)
 
 
 def r_SOI_m(a: float, m: float, M: float) -> float:
@@ -221,7 +221,7 @@ def r_SOI_m(a: float, m: float, M: float) -> float:
     :return: r [km] Radius of the sphere of influence of the orbiting object
     """
 
-    return a * np.pow(m/M, 2/5)
+    return a * np.power(m/M, 2/5)
 
 
 def energy_v_m_r(MU: float, v: float, m: float, r: float) -> float:
@@ -238,7 +238,7 @@ def energy_v_m_r(MU: float, v: float, m: float, r: float) -> float:
     return (m * v**2 / 2) - (m * MU / r)
 
 
-def sam(mu: float, p: float) -> float:
+def sam_p(mu: float, p: float) -> float:
     """
     Calculate the specific angular momentum (sam) of an object orbiting a reference object
 

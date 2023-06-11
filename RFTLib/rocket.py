@@ -356,7 +356,7 @@ def veff_saint_venant_wantzel(kappa: float, R: float, M: float, T_c: float, p_e:
     :return: v_eff [km/s] Effective exit velocity of the propulsion system
     """
 
-    return np.sqrt(2 * kappa * R * T_c / ((kappa - 1) * M) * (1 - np.pow(p_e / p_c, (kappa - 1) / kappa)))
+    return np.sqrt(2 * kappa * R * T_c / ((kappa - 1) * M) * (1 - np.power(p_e / p_c, (kappa - 1) / kappa)))
 
 
 def v_launch_latitude(rotation_velocity: float, latitude: float) -> float:

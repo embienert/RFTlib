@@ -53,6 +53,31 @@ def numeric_eccentricity_a_c(a: float, c: float) -> float:
     return c / a
 
 
+def numeric_eccentricity_rp_ra(radius_peri: float, radius_apo: float) -> float:
+    """
+    Calculate the numeric eccentricity
+
+    :param radius_peri: [km] Radius of the ellipse's peri-center
+    :param radius_apo: [km] Radius of the ellipse's apo-center
+    :return: e [km] Linear eccentricity of the ellipse
+    """
+
+    a = (radius_peri + radius_apo) / 2
+    return (radius_apo - a) / a
+
+
+def linear_eccentricity_rp_ra(radius_peri: float, radius_apo: float) -> float:
+    """
+    Calculate the numeric eccentricity
+
+    :param radius_peri: [km] Radius of the ellipse's peri-center
+    :param radius_apo: [km] Radius of the ellipse's apo-center
+    :return: c [km] Linear eccentricity of the ellipse
+    """
+
+    return radius_apo - (radius_peri + radius_apo) / 2
+
+
 def semilatus_rectum_a_b(a: float, b: float) -> float:
     """
     Calculate the ellipse's semilatus rectum ("Halbparameter")
