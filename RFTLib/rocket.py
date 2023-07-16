@@ -137,6 +137,18 @@ def veff_thrust_flow_rate(thrust: float, flow_rate: float) -> float:
     return thrust / flow_rate
 
 
+def flow_rate_veff_thrust(v_eff: float, thrust: float) -> float:
+    """
+    Calculate the propellant flow rate of the propulsion system
+
+    :param v_eff: [km/s] Effective exit velocity of the propulsion system
+    :param thrust: [km*kg/s² bzw. kN] Thrust of the propulsion system
+    :return: flow_rate [kg/s] Propellant flow rate of the propulsion system
+    """
+
+    return thrust / v_eff
+
+
 def isp_thrust_flow_rate(g0: float, thrust: float, flow_rate: float) -> float:
     """
     Calculate the specific impulse of the propulsion system
